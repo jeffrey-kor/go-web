@@ -30,6 +30,10 @@ func (f *fooHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(data))
 }
 
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello world!")
+}
+
 func barHandler(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	if name == "" {
@@ -41,10 +45,7 @@ func barHandler(w http.ResponseWriter, r *http.Request) {
 func NewHttpHandler() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello world!")
-	})
-
+	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/bar", barHandler)
 	mux.Handle("/foo", &fooHandler{})
 	return mux
